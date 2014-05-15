@@ -1,6 +1,7 @@
 ;;; buffer-move.el --- 
 
 ;; Copyright (C) 2004-2014  Lucas Bonnet <lucas@rincevent.net.fr>
+;; Copyright (C) 2014  Mathis Hofer <mathis@fsfe.org>
 
 ;; Author: Lucas Bonnet <lucas@rincevent.net>
 ;; Keywords: lisp,convenience
@@ -60,11 +61,31 @@
 ;; (global-set-key (kbd "<C-S-left>")   'buf-move-left)
 ;; (global-set-key (kbd "<C-S-right>")  'buf-move-right)
 
+;; Alternatively, you may let the current window switch back to the previous
+;; buffer, instead of swapping the buffers of both windows. Set the
+;; following customization flag to nil to activate this behavior:
+
+;; (setq buf-move-swap-buffers nil)
+
 
 ;;; Code:
 
 
 (require 'windmove)
+
+
+(defconst buf-move-version "0.5"
+  "Version of buffer-move.el")
+
+(defgroup buffer-move nil
+  "Swap buffers without typing C-x b on each window"
+  :group 'tools)
+
+(defcustom buf-move-swap-buffers t
+  "If nil, switch current window to the previous buffer instead of
+   swapping the buffers of both windows."
+  :group 'buffer-move
+  :type 'boolean)
 
 
 (defun buf-move-to (direction)
@@ -75,8 +96,13 @@
          (buf-this-buf (window-buffer (selected-window))))
     (if (null other-win)
         (error "No window in this direction")
-      ;; switch selected window to buffer of other window
-      (set-window-buffer (selected-window) (window-buffer other-win))
+      (if buf-move-swap-buffers
+          ;; switch selected window to buffer of other window (swapping)
+          (set-window-buffer (selected-window) (window-buffer other-win))
+
+          ;; switch selected window to previous buffer (no swapping)
+          (switch-to-prev-buffer (selected-window))
+      )
 
       ;; switch other window to this buffer
       (set-window-buffer other-win buf-this-buf)
