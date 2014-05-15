@@ -1,11 +1,11 @@
-;;; buffer-move.el --- 
+;;; buffer-move.el ---
 
 ;; Copyright (C) 2004-2014  Lucas Bonnet <lucas@rincevent.net.fr>
 ;; Copyright (C) 2014  Mathis Hofer <mathis@fsfe.org>
 
 ;; Author: Lucas Bonnet <lucas@rincevent.net>
 ;; Keywords: lisp,convenience
-;; Version: 0.5
+;; Version: 0.6
 ;; URL : https://github.com/lukhas/buffer-move
 
 ;; This program is free software; you can redistribute it and/or
@@ -74,7 +74,7 @@
 (require 'windmove)
 
 
-(defconst buf-move-version "0.5"
+(defconst buf-move-version "0.6"
   "Version of buffer-move.el")
 
 (defgroup buffer-move nil
