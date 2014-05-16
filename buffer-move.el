@@ -74,18 +74,19 @@
 (require 'windmove)
 
 
-(defconst buf-move-version "0.6"
+(defconst buffer-move-version "0.6"
   "Version of buffer-move.el")
 
 (defgroup buffer-move nil
   "Swap buffers without typing C-x b on each window"
   :group 'tools)
 
-(defcustom buf-move-swap-buffers t
-  "If nil, switch current window to the previous buffer instead of
-   swapping the buffers of both windows."
+(defcustom buffer-move-behavior 'swap
+  "If set to 'swap (default), the buffers will be exchanged
+  (i.e. swapped), if set to 'move, the current window is switch back to the
+  previously displayed buffer (i.e. the buffer is moved)."
   :group 'buffer-move
-  :type 'boolean)
+  :type 'symbol)
 
 
 (defun buf-move-to (direction)
@@ -96,12 +97,12 @@
          (buf-this-buf (window-buffer (selected-window))))
     (if (null other-win)
         (error "No window in this direction")
-      (if buf-move-swap-buffers
+      (if (eq buffer-move-behavior 'move)
+          ;; switch selected window to previous buffer (moving)
+          (switch-to-prev-buffer (selected-window))
+
           ;; switch selected window to buffer of other window (swapping)
           (set-window-buffer (selected-window) (window-buffer other-win))
-
-          ;; switch selected window to previous buffer (no swapping)
-          (switch-to-prev-buffer (selected-window))
       )
 
       ;; switch other window to this buffer
@@ -134,9 +135,9 @@ one, an error is signaled."
   (buf-move-to 'left))
 
 (defun buf-move-right ()
-  "Swap the current buffer and the buffer on the right of the split.
-   If there is no split, ie now window on the right of the current
-   one, an error is signaled."
+"Swap the current buffer and the buffer on the right of the split.
+If there is no split, ie now window on the right of the current
+one, an error is signaled."
   (interactive)
   (buf-move-to 'right))
 
