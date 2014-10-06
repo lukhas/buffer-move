@@ -1,6 +1,7 @@
 ;;; buffer-move.el ---
 
 ;; Copyright (C) 2004-2014  Lucas Bonnet <lucas@rincevent.net>
+;; Copyright (C) 2014  Mathis Hofer <mathis@fsfe.org>
 
 ;; Author: Lucas Bonnet <lucas@rincevent.net>
 ;;         Geyslan G. Bem <geyslan@gmail.com>
@@ -61,82 +62,85 @@
 ;; (global-set-key (kbd "<C-S-left>")   'buf-move-left)
 ;; (global-set-key (kbd "<C-S-right>")  'buf-move-right)
 
+;; Alternatively, you may let the current window switch back to the previous
+;; buffer, instead of swapping the buffers of both windows. Set the
+;; following customization flag to nil to activate this behavior:
+
+;; (setq buf-move-swap-buffers nil)
+
 
 ;;; Code:
 
 
 (require 'windmove)
 
+
+(defconst buffer-move-version "0.6.1"
+  "Version of buffer-move.el")
+
+(defgroup buffer-move nil
+  "Swap buffers without typing C-x b on each window"
+  :group 'tools)
+
+(defcustom buffer-move-behavior 'swap
+  "If set to 'swap (default), the buffers will be exchanged
+  (i.e. swapped), if set to 'move, the current window is switch back to the
+  previously displayed buffer (i.e. the buffer is moved)."
+  :group 'buffer-move
+  :type 'symbol)
+
+
+(defun buf-move-to (direction)
+  "Helper function to move the current buffer to the window in the given
+   direction (with must be 'up, 'down', 'left or 'right). An error is
+   thrown, if no window exists in this direction."
+  (let* ((other-win (windmove-find-other-window direction))
+         (buf-this-buf (window-buffer (selected-window))))
+    (if (null other-win)
+        (error "No window in this direction")
+      (if (eq buffer-move-behavior 'move)
+          ;; switch selected window to previous buffer (moving)
+          (switch-to-prev-buffer (selected-window))
+
+        ;; switch selected window to buffer of other window (swapping)
+        (set-window-buffer (selected-window) (window-buffer other-win))
+        )
+
+      ;; switch other window to this buffer
+      (set-window-buffer other-win buf-this-buf)
+
+      (select-window other-win))))
+
+
 (defun buf-move-up ()
   "Swap the current buffer and the buffer above the split.
-If there is no split, ie now window above the current one, an
-error is signaled."
-;;  "Switches between the current buffer, and the buffer above the
-;;  split, if possible."
+   If there is no split, ie now window above the current one, an
+   error is signaled."
+  ;;  "Switches between the current buffer, and the buffer above the
+  ;;  split, if possible."
   (interactive)
-  (let* ((other-win (windmove-find-other-window 'up))
-	 (buf-this-buf (window-buffer (selected-window))))
-    (if (null other-win)
-        (error "No window above this one")
-      (if (window-dedicated-p other-win)
-	  (error "The window above this one is dedicated"))
-      ;; swap top with this one
-      (set-window-buffer (selected-window) (window-buffer other-win))
-      ;; move this one to top
-      (set-window-buffer other-win buf-this-buf)
-      (select-window other-win))))
+  (buf-move-to 'up))
 
 (defun buf-move-down ()
-"Swap the current buffer and the buffer under the split.
-If there is no split, ie now window under the current one, an
-error is signaled."
+  "Swap the current buffer and the buffer under the split.
+   If there is no split, ie now window under the current one, an
+   error is signaled."
   (interactive)
-  (let* ((other-win (windmove-find-other-window 'down))
-	 (buf-this-buf (window-buffer (selected-window))))
-    (if (or (null other-win)
-            (string-match "^ \\*Minibuf" (buffer-name (window-buffer other-win))))
-        (error "No window under this one")
-      (if (window-dedicated-p other-win)
-	  (error "The window under this one is dedicated"))
-      ;; swap top with this one
-      (set-window-buffer (selected-window) (window-buffer other-win))
-      ;; move this one to top
-      (set-window-buffer other-win buf-this-buf)
-      (select-window other-win))))
+  (buf-move-to 'down))
 
 (defun buf-move-left ()
-"Swap the current buffer and the buffer on the left of the split.
-If there is no split, ie now window on the left of the current
-one, an error is signaled."
+  "Swap the current buffer and the buffer on the left of the split.
+   If there is no split, ie now window on the left of the current
+   one, an error is signaled."
   (interactive)
-  (let* ((other-win (windmove-find-other-window 'left))
-	 (buf-this-buf (window-buffer (selected-window))))
-    (if (null other-win)
-        (error "No left split")
-      (if (window-dedicated-p other-win)
-	  (error "The left split is dedicated"))
-      ;; swap top with this one
-      (set-window-buffer (selected-window) (window-buffer other-win))
-      ;; move this one to top
-      (set-window-buffer other-win buf-this-buf)
-      (select-window other-win))))
+  (buf-move-to 'left))
 
 (defun buf-move-right ()
-"Swap the current buffer and the buffer on the right of the split.
-If there is no split, ie now window on the right of the current
-one, an error is signaled."
+  "Swap the current buffer and the buffer on the right of the split.
+   If there is no split, ie now window on the right of the current
+   one, an error is signaled."
   (interactive)
-  (let* ((other-win (windmove-find-other-window 'right))
-	 (buf-this-buf (window-buffer (selected-window))))
-    (if (null other-win)
-        (error "No right split")
-      (if (window-dedicated-p other-win)
-	  (error "The right split is dedicated"))
-      ;; swap top with this one
-      (set-window-buffer (selected-window) (window-buffer other-win))
-      ;; move this one to top
-      (set-window-buffer other-win buf-this-buf)
-      (select-window other-win))))
+  (buf-move-to 'right))
 
 
 (provide 'buffer-move)

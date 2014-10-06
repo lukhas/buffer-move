@@ -36,3 +36,9 @@ define some keybindings. For example, i use :
     (global-set-key (kbd "<C-S-down>")   'buf-move-down)
     (global-set-key (kbd "<C-S-left>")   'buf-move-left)
     (global-set-key (kbd "<C-S-right>")  'buf-move-right)
+
+Alternatively, you may let the current window switch back to the previous
+buffer, instead of swapping the buffers of both windows. Set the
+following customization flag to nil to activate this behavior:
+
+    (setq buf-move-swap-buffers nil)
