@@ -2,9 +2,11 @@
 
 ;; Copyright (C) 2004-2014  Lucas Bonnet <lucas@rincevent.net>
 ;; Copyright (C) 2014  Mathis Hofer <mathis@fsfe.org>
+;; Copyright (C) 2014  Geyslan G. Bem <geyslan@gmail.com>
 
-;; Author: Lucas Bonnet <lucas@rincevent.net>
-;;         Geyslan G. Bem <geyslan@gmail.com>
+;; Authors: Lucas Bonnet <lucas@rincevent.net>
+;;          Geyslan G. Bem <geyslan@gmail.com>
+;;          Mathis Hofer <mathis@fsfe.org>
 ;; Keywords: lisp,convenience
 ;; Version: 0.6.1
 ;; URL : https://github.com/lukhas/buffer-move
