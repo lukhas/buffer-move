@@ -1,10 +1,11 @@
-;;; buffer-move.el --- 
+;;; buffer-move.el ---
 
-;; Copyright (C) 2004-2014  Lucas Bonnet <lucas@rincevent.net.fr>
+;; Copyright (C) 2004-2014  Lucas Bonnet <lucas@rincevent.net>
 
 ;; Author: Lucas Bonnet <lucas@rincevent.net>
+;;         Geyslan G. Bem <geyslan@gmail.com>
 ;; Keywords: lisp,convenience
-;; Version: 0.5
+;; Version: 0.6.1
 ;; URL : https://github.com/lukhas/buffer-move
 
 ;; This program is free software; you can redistribute it and/or
@@ -77,6 +78,8 @@ error is signaled."
 	 (buf-this-buf (window-buffer (selected-window))))
     (if (null other-win)
         (error "No window above this one")
+      (if (window-dedicated-p other-win)
+	  (error "The window above this one is dedicated"))
       ;; swap top with this one
       (set-window-buffer (selected-window) (window-buffer other-win))
       ;; move this one to top
@@ -90,9 +93,11 @@ error is signaled."
   (interactive)
   (let* ((other-win (windmove-find-other-window 'down))
 	 (buf-this-buf (window-buffer (selected-window))))
-    (if (or (null other-win) 
+    (if (or (null other-win)
             (string-match "^ \\*Minibuf" (buffer-name (window-buffer other-win))))
         (error "No window under this one")
+      (if (window-dedicated-p other-win)
+	  (error "The window under this one is dedicated"))
       ;; swap top with this one
       (set-window-buffer (selected-window) (window-buffer other-win))
       ;; move this one to top
@@ -108,6 +113,8 @@ one, an error is signaled."
 	 (buf-this-buf (window-buffer (selected-window))))
     (if (null other-win)
         (error "No left split")
+      (if (window-dedicated-p other-win)
+	  (error "The left split is dedicated"))
       ;; swap top with this one
       (set-window-buffer (selected-window) (window-buffer other-win))
       ;; move this one to top
@@ -123,6 +130,8 @@ one, an error is signaled."
 	 (buf-this-buf (window-buffer (selected-window))))
     (if (null other-win)
         (error "No right split")
+      (if (window-dedicated-p other-win)
+	  (error "The right split is dedicated"))
       ;; swap top with this one
       (set-window-buffer (selected-window) (window-buffer other-win))
       ;; move this one to top
