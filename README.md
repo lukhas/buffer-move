@@ -39,6 +39,6 @@ define some keybindings. For example, i use :
 
 Alternatively, you may let the current window switch back to the previous
 buffer, instead of swapping the buffers of both windows. Set the
-following customization flag to nil to activate this behavior:
+following customization flag to 'move to activate this behavior:
 
-    (setq buf-move-swap-buffers nil)
+    (setq buffer-move-behavior 'move)
