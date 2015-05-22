@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2004-2014  Lucas Bonnet <lucas@rincevent.net>
 ;; Copyright (C) 2014  Mathis Hofer <mathis@fsfe.org>
-;; Copyright (C) 2014  Geyslan G. Bem <geyslan@gmail.com>
+;; Copyright (C) 2014-2015  Geyslan G. Bem <geyslan@gmail.com>
 
 ;; Authors: Lucas Bonnet <lucas@rincevent.net>
 ;;          Geyslan G. Bem <geyslan@gmail.com>
@@ -100,6 +100,10 @@
          (buf-this-buf (window-buffer (selected-window))))
     (if (null other-win)
         (error "No window in this direction")
+      (if (window-dedicated-p other-win)
+	  (error "The window in this direction is dedicated"))
+      (if (string-match "^ \\*Minibuf" (buffer-name (window-buffer other-win)))
+	  (error "The window in this direction is the Minibuf"))
       (if (eq buffer-move-behavior 'move)
           ;; switch selected window to previous buffer (moving)
           (switch-to-prev-buffer (selected-window))
