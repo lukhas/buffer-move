@@ -8,7 +8,7 @@
 ;;          Geyslan G. Bem <geyslan@gmail.com>
 ;;          Mathis Hofer <mathis@fsfe.org>
 ;; Keywords: lisp,convenience
-;; Version: 0.6.1
+;; Version: 0.6.2
 ;; URL : https://github.com/lukhas/buffer-move
 
 ;; This program is free software; you can redistribute it and/or
