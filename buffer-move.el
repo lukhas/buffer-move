@@ -1,4 +1,4 @@
-;;; buffer-move.el ---
+;;; buffer-move.el --- easily swap buffers
 
 ;; Copyright (C) 2004-2014  Lucas Bonnet <lucas@rincevent.net>
 ;; Copyright (C) 2014  Mathis Hofer <mathis@fsfe.org>
