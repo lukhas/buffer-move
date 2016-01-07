@@ -151,6 +151,20 @@
   (interactive)
   (buf-move-to 'right))
 
+;;;###autoload
+(defun buf-move ()
+  "Begin moving the current buffer to different windows.
+
+Use the arrow keys to move in the desired direction.  Pressing
+any other key exits this function."
+  (interactive)
+  (let ((map (make-sparse-keymap)))
+    (dolist (x '(("<up>" . buf-move-up)
+                 ("<left>" . buf-move-left)
+                 ("<down>" . buf-move-down)
+                 ("<right>" . buf-move-right)))
+      (define-key map (read-kbd-macro (car x)) (cdr x)))
+    (set-transient-map map t)))
 
 (provide 'buffer-move)
 ;;; buffer-move.el ends here
