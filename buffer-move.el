@@ -91,6 +91,12 @@
   :group 'buffer-move
   :type 'symbol)
 
+(defcustom buffer-move-stay-after-swap nil
+  "If set to non-nil, point will stay in the current window
+  so it will not be moved when swapping buffers. This setting
+  only has effect if `buffer-move-behavior' is set to 'swap."
+  :group 'buffer-move
+  :type 'boolean)
 
 (defun buf-move-to (direction)
   "Helper function to move the current buffer to the window in the given
@@ -115,7 +121,9 @@
       ;; switch other window to this buffer
       (set-window-buffer other-win buf-this-buf)
 
-      (select-window other-win))))
+      (when (or (null buffer-move-stay-after-swap)
+              (eq buffer-move-behavior 'move))
+          (select-window other-win)))))
 
 ;;;###autoload
 (defun buf-move-up ()
