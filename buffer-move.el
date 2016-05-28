@@ -122,8 +122,8 @@
       (set-window-buffer other-win buf-this-buf)
 
       (when (or (null buffer-move-stay-after-swap)
-              (eq buffer-move-behavior 'move))
-          (select-window other-win)))))
+                (eq buffer-move-behavior 'move))
+        (select-window other-win)))))
 
 ;;;###autoload
 (defun buf-move-up ()
