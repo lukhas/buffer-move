@@ -37,6 +37,12 @@ define some keybindings. For example, i use :
     (global-set-key (kbd "<C-S-left>")   'buf-move-left)
     (global-set-key (kbd "<C-S-right>")  'buf-move-right)
 
+By default the point will switch along with the moving buffer,
+if you want the point to stay (as vim switches) you can set
+`buffer-move-stay-after-swap` to a non-nil value like so:
+
+    (setq buffer-move-stay-after-swap t)
+
 Alternatively, you may let the current window switch back to the previous
 buffer, instead of swapping the buffers of both windows. Set the
 following customization variable to 'move to activate this behavior:
