@@ -8,8 +8,8 @@
 ;;          Mathis Hofer <mathis@fsfe.org>
 ;;          Geyslan G. Bem <geyslan@gmail.com>
 ;; URL: https://github.com/lukhas/buffer-move/
-;; Version: 0.6.3
-;; Package-Requires: ((emacs "24.1"))
+;; Version: 0.6.4
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience
 
 ;; This file is NOT part of GNU Emacs.
@@ -74,8 +74,9 @@
 ;;; Code:
 
 (require 'windmove)
+(require 'cl-lib)
 
-(defconst buffer-move-version "0.6.3"
+(defconst buffer-move-version "0.6.4"
   "Version of buffer-move.el")
 
 (defgroup buffer-move nil
